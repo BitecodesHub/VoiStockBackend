@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Invoice.Models.Invoice;
+import com.Invoice.Models.Stock;
 import com.Invoice.Repository.InvoiceRepository;
+import com.Invoice.Repository.StockRepository;
 import com.Invoice.Service.InvoiceService;
+
+import jakarta.transaction.Transactional;
 
 @RestController
 @RequestMapping("/api/invoice")
@@ -24,25 +28,52 @@ public class InvoiceController {
 	@Autowired
 	private InvoiceRepository invoiceRepository;
 
+	@Autowired
+	private StockRepository stockRepository;
+
+	@Transactional
 	@PostMapping
-	public void createInvoice(@RequestBody Invoice invoice) {
+	public void createInvoice(@RequestBody InvoiceRequest request) {
+		// Extract the invoice and stock updates from the request
+		Invoice invoice = request.getInvoice();
+		List<Stock> stockUpdates = request.getStockUpdates();
+
+		// Saving the invoice
 		invoiceService.saveInvoice(invoice);
+
+		// Update stock quantities only if the invoice is successfully generated
+		for (Stock update : stockUpdates) {
+			Stock stock = stockRepository.findById(update.getId())
+					.orElseThrow(() -> new RuntimeException("Stock item not found"));
+			stock.setQuantity(update.getQuantity()); // Deduct the quantity
+			stockRepository.save(stock);
+		}
 	}
 
 	@GetMapping("/{userId}")
 	public List<Invoice> getAllInvoices(@PathVariable Long userId) {
 		return invoiceRepository.getByUserId(userId);
-//		return invoiceService.getAllInvoices();
+	}
+}
+
+class InvoiceRequest {
+	private Invoice invoice;
+	private List<Stock> stockUpdates;
+
+	// Getters and Setters
+	public Invoice getInvoice() {
+		return invoice;
 	}
 
-//	@GetMapping("/{id}")
-//	public Invoice getInvoiceById(@PathVariable Long id) {
-//		return invoiceService.getInvoiceById(id);
-//	}
-//
-//	@DeleteMapping("/{id}")
-//	public String deleteInvoice(@PathVariable Long id) {
-//		invoiceService.deleteInvoice(id);
-//		return "Invoice with ID " + id + " deleted successfully.";
-//	}
+	public void setInvoice(Invoice invoice) {
+		this.invoice = invoice;
+	}
+
+	public List<Stock> getStockUpdates() {
+		return stockUpdates;
+	}
+
+	public void setStockUpdates(List<Stock> stockUpdates) {
+		this.stockUpdates = stockUpdates;
+	}
 }

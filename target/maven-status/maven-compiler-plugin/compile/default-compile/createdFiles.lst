@@ -18,6 +18,7 @@ com\Invoice\Service\InvoiceService.class
 com\Invoice\Security\JwtAuthenticationFilter.class
 com\Invoice\Controller\DeliveryChallanController.class
 com\Invoice\Security\AuthController.class
+com\Invoice\Controller\ChallanRequest.class
 com\Invoice\Repository\DeliveryChallanRepository.class
 com\Invoice\Security\CustomCorsFilter.class
 com\Invoice\Models\Invoice.class
@@ -26,4 +27,5 @@ com\Invoice\Security\JwtResponse.class
 com\Invoice\Controller\InvoiceController.class
 com\Invoice\Security\OtpService.class
 com\Invoice\Security\LoginRequest.class
+com\Invoice\Controller\InvoiceRequest.class
 com\Invoice\Security\OtpVerificationRequest.class

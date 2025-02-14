@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Invoice.Models.DeliveryChallan;
+import com.Invoice.Models.Stock;
 import com.Invoice.Repository.DeliveryChallanRepository;
+import com.Invoice.Repository.StockRepository;
+
+import jakarta.transaction.Transactional;
 
 @RestController
 @RequestMapping("/api/dchallan")
@@ -20,15 +24,56 @@ public class DeliveryChallanController {
 	@Autowired
 	private DeliveryChallanRepository deliveryChallanRepository;
 
+	@Autowired
+	private StockRepository stockRepository;
+
 	@GetMapping("/{userId}")
 	public List<DeliveryChallan> getAllByUserId(@PathVariable Long userId) {
 		System.out.println("HERE IS DATA : " + deliveryChallanRepository.getByUserId(userId));
 		return deliveryChallanRepository.getByUserId(userId);
 	}
 
+	@Transactional
 	@PostMapping
-	public DeliveryChallan createDeliveryChallan(@RequestBody DeliveryChallan deliveryChallan) {
-		return deliveryChallanRepository.save(deliveryChallan);
+	public void createDeliveryChallan(@RequestBody ChallanRequest request) {
+		DeliveryChallan deliveryChallan = request.getDchallan();
+
+		List<Stock> stockUpdates = request.getStockUpdates();
+
+		// Saving the invoice
+		deliveryChallanRepository.save(deliveryChallan);
+
+		stockUpdates.stream().forEach(s -> System.out.println(s.getQuantity()));
+
+		// Update stock quantities only if the invoice is successfully generated
+		for (Stock update : stockUpdates) {
+			Stock stock = stockRepository.findById(update.getId())
+					.orElseThrow(() -> new RuntimeException("Stock item not found"));
+			stock.setQuantity(update.getQuantity()); // Deduct the quantity
+			stockRepository.save(stock);
+		}
+	}
+
+}
+
+class ChallanRequest {
+	private DeliveryChallan dchallan;
+	private List<Stock> stockUpdates;
+
+	public List<Stock> getStockUpdates() {
+		return stockUpdates;
+	}
+
+	public void setStockUpdates(List<Stock> stockUpdates) {
+		this.stockUpdates = stockUpdates;
+	}
+
+	public DeliveryChallan getDchallan() {
+		return dchallan;
+	}
+
+	public void setDchallan(DeliveryChallan dchallan) {
+		this.dchallan = dchallan;
 	}
 
 }
