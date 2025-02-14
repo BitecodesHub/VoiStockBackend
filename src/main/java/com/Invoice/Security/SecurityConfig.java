@@ -2,6 +2,7 @@ package com.Invoice.Security;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +17,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -24,6 +26,9 @@ public class SecurityConfig implements WebMvcConfigurer {
 
 	private final CustomUserDetailsService userDetailsService;
 	private JwtService jwtService;
+
+	@Value("${frontend.api.url}")
+	private String frontendUrl;
 
 	public SecurityConfig(CustomUserDetailsService userDetailsService, JwtService jwtService) {
 		this.userDetailsService = userDetailsService;
@@ -48,10 +53,16 @@ public class SecurityConfig implements WebMvcConfigurer {
 		return http.build();
 	}
 
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/uploads/**")
+				.addResourceLocations("file:" + System.getProperty("user.home") + "/uploads/");
+	}
+
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Replace with your frontend's URL
+		configuration.setAllowedOrigins(List.of(frontendUrl)); // Frontend URL
 		configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
 		configuration.setAllowCredentials(true);
@@ -63,7 +74,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**").allowedOrigins("http://localhost:3000") // Your React app URL
+		registry.addMapping("/**").allowedOrigins(frontendUrl) // Frontend URL
 				.allowedMethods("GET", "POST", "PUT", "DELETE").allowedHeaders("*").allowCredentials(true);
 	}
 

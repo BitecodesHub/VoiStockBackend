@@ -85,7 +85,7 @@ public class RegistrationService {
 				Please keep this email for your records.
 
 				Happy Learning,
-				The Learn Without Limits Team
+				BiteCodes Team
 				""".formatted(email);
 
 		emailService.sendEmail(email, subject, message);

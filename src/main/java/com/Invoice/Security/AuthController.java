@@ -112,7 +112,7 @@ public class AuthController {
 					.orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
 			// Check if the provided password matches the stored password
-			if (password.equals(user.getPassword())) {
+			if (password.equals(user.getPassword()) && user.isEnabled()) {
 				// If the passwords match, generate the JWT token
 				String token = jwtService.generateToken(user.getEmail());
 				String username = user.getUsername();
@@ -125,6 +125,7 @@ public class AuthController {
 				LoginResponse response = new LoginResponse(true, token, username, email, phonenum, state, userid,
 						profileurl, name);
 				return ResponseEntity.ok(response);
+
 			}
 
 			// If authentication fails

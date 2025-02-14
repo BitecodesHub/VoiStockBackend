@@ -19,7 +19,6 @@ import com.Invoice.Service.StockService;
 
 @RestController
 @RequestMapping("/api/stocks")
-//@CrossOrigin(origins = "http://localhost:3000")
 public class StockController {
 
 	@Autowired

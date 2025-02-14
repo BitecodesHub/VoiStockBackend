@@ -16,7 +16,6 @@ import com.Invoice.Service.InvoiceService;
 
 @RestController
 @RequestMapping("/api/invoice")
-//@CrossOrigin(origins = "http://localhost:3000")
 public class InvoiceController {
 
 	@Autowired
