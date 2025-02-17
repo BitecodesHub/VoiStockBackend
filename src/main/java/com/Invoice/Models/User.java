@@ -1,4 +1,4 @@
-package com.Invoice.Security;
+package com.Invoice.Models;
 
 import java.time.LocalDateTime;
 import java.util.Collection;

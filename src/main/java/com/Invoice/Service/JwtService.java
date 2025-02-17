@@ -1,4 +1,4 @@
-package com.Invoice.Security;
+package com.Invoice.Service;
 
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;

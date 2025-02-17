@@ -2,6 +2,8 @@ package com.Invoice.Security;
 
 import java.util.List;
 
+import com.Invoice.Service.CustomUserDetailsService;
+import com.Invoice.Service.JwtService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

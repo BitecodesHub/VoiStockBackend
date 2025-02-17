@@ -2,6 +2,7 @@ package com.Invoice.Controller;
 
 import java.util.List;
 
+import com.Invoice.Response.InvoiceRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,24 +57,3 @@ public class InvoiceController {
 	}
 }
 
-class InvoiceRequest {
-	private Invoice invoice;
-	private List<Stock> stockUpdates;
-
-	// Getters and Setters
-	public Invoice getInvoice() {
-		return invoice;
-	}
-
-	public void setInvoice(Invoice invoice) {
-		this.invoice = invoice;
-	}
-
-	public List<Stock> getStockUpdates() {
-		return stockUpdates;
-	}
-
-	public void setStockUpdates(List<Stock> stockUpdates) {
-		this.stockUpdates = stockUpdates;
-	}
-}

@@ -1,5 +1,7 @@
-package com.Invoice.Security;
+package com.Invoice.Service;
 
+import com.Invoice.Models.User;
+import com.Invoice.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +19,7 @@ public class CustomUserDetailsService implements org.springframework.security.co
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		com.Invoice.Security.User user = userRepository.findByEmail(email)
+		User user = userRepository.findByEmail(email)
 				.orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
 		// Return UserDetails with authorities based on the role

@@ -1,8 +1,12 @@
-package com.Invoice.Security;
+package com.Invoice.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import com.Invoice.Models.User;
+import com.Invoice.Repository.UserRepository;
+import com.Invoice.Service.EmailService;
+import com.Invoice.Service.OtpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -72,7 +76,7 @@ public class RegistrationService {
 	}
 
 	private void sendRegistrationSuccessEmail(String email) {
-		String subject = "Welcome to Learn Without Limits!";
+		String subject = "Welcome to VoiStock!";
 		String message = """
 				Dear User,
 

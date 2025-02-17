@@ -1,4 +1,4 @@
-package com.Invoice.Security;
+package com.Invoice.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -30,7 +30,7 @@ public class EmailService {
 	}
 
 	public void sendOtpEmail(String to, String otp) {
-		String subject = "Your OTP for Learn Without Limits";
+		String subject = "Your OTP for VoiStock";
 		String message = """
 				Dear User,
 

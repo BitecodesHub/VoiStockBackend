@@ -2,6 +2,8 @@ package com.Invoice.Security;
 
 import java.io.IOException;
 
+import com.Invoice.Service.CustomUserDetailsService;
+import com.Invoice.Service.JwtService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +29,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 
 		String token = getTokenFromRequest(request);
-		System.out.println("Extracted Token: " + token); // Add this log to verify token
 
 		if (token != null && jwtService.isTokenValid(token)) {
 			String username = jwtService.getUsernameFromToken(token);

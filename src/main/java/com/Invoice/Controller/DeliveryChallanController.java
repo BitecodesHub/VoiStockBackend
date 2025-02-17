@@ -2,6 +2,7 @@ package com.Invoice.Controller;
 
 import java.util.List;
 
+import com.Invoice.Response.ChallanRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,24 +57,3 @@ public class DeliveryChallanController {
 
 }
 
-class ChallanRequest {
-	private DeliveryChallan dchallan;
-	private List<Stock> stockUpdates;
-
-	public List<Stock> getStockUpdates() {
-		return stockUpdates;
-	}
-
-	public void setStockUpdates(List<Stock> stockUpdates) {
-		this.stockUpdates = stockUpdates;
-	}
-
-	public DeliveryChallan getDchallan() {
-		return dchallan;
-	}
-
-	public void setDchallan(DeliveryChallan dchallan) {
-		this.dchallan = dchallan;
-	}
-
-}

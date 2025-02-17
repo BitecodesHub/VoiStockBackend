@@ -1,5 +1,6 @@
-package com.Invoice.Security;
+package com.Invoice.Repository;
 
+import com.Invoice.Models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

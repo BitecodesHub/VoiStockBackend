@@ -23,7 +23,6 @@ public class InvoiceService {
 
 	@Transactional
 	public Invoice saveInvoice(Invoice invoice) {
-		// Save the invoice
 		return invoiceRepository.save(invoice);
 	}
 

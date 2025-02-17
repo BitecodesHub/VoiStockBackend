@@ -1,5 +1,14 @@
-package com.Invoice.Security;
+package com.Invoice.Controller;
 
+import com.Invoice.Models.User;
+import com.Invoice.Repository.UserRepository;
+import com.Invoice.Response.ApiResponse;
+import com.Invoice.Response.LoginRequest;
+import com.Invoice.Response.LoginResponse;
+import com.Invoice.Response.OtpVerificationRequest;
+import com.Invoice.Service.CustomUserDetailsService;
+import com.Invoice.Service.JwtService;
+import com.Invoice.Service.RegistrationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,6 +20,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalTime;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -94,6 +105,7 @@ public class AuthController {
 	public ResponseEntity<ApiResponse> verifyOtp(@RequestBody OtpVerificationRequest request) {
 		boolean verified = registrationService.verifyOtp(request.getEmail(), request.getOtp());
 		if (verified) {
+			System.out.println("|========> User with Email "+ request.getEmail()+ " Registered Successfully at "+LocalTime.now());
 			return ResponseEntity.ok(new ApiResponse(true, "Email verified!"));
 		} else {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -124,8 +136,8 @@ public class AuthController {
 				// Return the success response with the token
 				LoginResponse response = new LoginResponse(true, token, username, email, phonenum, state, userid,
 						profileurl, name);
+				System.out.println("|========> User Logged In : "+username+" from "+state+" at "+LocalTime.now());
 				return ResponseEntity.ok(response);
-
 			}
 
 			// If authentication fails
